@@ -23,7 +23,7 @@ import WindChart from '../Charts/WindChart';
 import WindRose from '../Widgets/WindRose';
 import UVIndex from '../Widgets/UVIndex';
 import AirQuality from '../Widgets/AirQuality';
-// import Weather3D from '../Widgets/Weather3D'; // Временно отключено - ошибка Three.js
+import SafeWeather3D from '../Widgets/SafeWeather3D';
 import PollenWidget from '../Widgets/PollenWidget';
 import AgricultureWidget from '../Widgets/AgricultureWidget';
 import PressureWidget from '../Widgets/PressureWidget';
@@ -333,8 +333,8 @@ const Dashboard = ({ isDark, toggleTheme }) => {
             <HumidityChart data={data?.hourly} />
             <WindRose data={data?.windRose} />
 
-            {/* Row 8: 3D Visualization - ВРЕМЕННО ОТКЛЮЧЕНО */}
-            {/* <Weather3D condition={data?.current?.condition} /> */}
+            {/* Row 8: 3D Visualization */}
+            <SafeWeather3D condition={data?.current?.condition} />
 
             {/* Row 9: UV and Air Quality */}
             <UVIndex value={data?.current?.uvIndex || 0} />
