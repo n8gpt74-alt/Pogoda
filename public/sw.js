@@ -85,26 +85,21 @@ const strategies = {
   },
 
   // Network First для API
-  networkFirst: async (request, cacheName = API_CACHE, maxAge = 5 * 60 * 1000) => {
+  networkFirst: async (request, cacheName = API_CACHE) => {
     try {
       const response = await fetch(request);
       if (response.ok) {
         const cache = await caches.open(cacheName);
-        const responseClone = response.clone();
-        responseClone.headers.append('sw-cache-time', Date.now().toString());
-        cache.put(request, responseClone);
+        cache.put(request, response.clone());
       }
       return response;
     } catch (error) {
       const cached = await caches.match(request);
       if (cached) {
-        const cacheTime = cached.headers.get('sw-cache-time');
-        if (cacheTime && (Date.now() - parseInt(cacheTime)) < maxAge) {
-          return cached;
-        }
+        return cached;
       }
-      // Возвращаем устаревший кэш или fallback
-      return cached || caches.match(OFFLINE_URL);
+      // Возвращаем fallback при отсутствии кэша
+      return caches.match(OFFLINE_URL);
     }
   },
 

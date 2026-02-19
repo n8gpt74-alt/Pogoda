@@ -31,7 +31,7 @@
     <script type="module" src="./src/main.jsx"></script>
     <script>
       // Register Service Worker
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && !['localhost', '127.0.0.1'].includes(window.location.hostname)) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('./sw.js')
             .then((registration) => {

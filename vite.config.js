@@ -18,8 +18,6 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             // React и зависимости
             'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
-            // Three.js для 3D глобуса
-            'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
             // Графики
             'charts-vendor': ['recharts'],
             // Иконки
@@ -37,7 +35,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: false
     },
     optimizeDeps: {
-      include: ['react', 'react-dom', 'three', '@react-three/fiber']
+      include: ['react', 'react-dom']
     }
   }
 })
