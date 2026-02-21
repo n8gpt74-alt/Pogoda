@@ -16,14 +16,16 @@ import OfflineIndicator from '../common/OfflineIndicator';
 import WeatherAlerts from '../Widgets/WeatherAlerts';
 import CurrentWeather from '../CurrentWeather/CurrentWeather';
 import Forecast from '../Forecast/Forecast';
-import TemperatureChart from '../Charts/TemperatureChart';
-import HumidityChart from '../Charts/HumidityChart';
-import PrecipitationChart from '../Charts/PrecipitationChart';
-import WindChart from '../Charts/WindChart';
+import {
+  LazyHumidityChartWidget,
+  LazyPrecipitationChartWidget,
+  LazySafeWeather3DWidget,
+  LazyTemperatureChartWidget,
+  LazyWindChartWidget,
+} from './DashboardHeavyWidgets';
 import WindRose from '../Widgets/WindRose';
 import UVIndex from '../Widgets/UVIndex';
 import AirQuality from '../Widgets/AirQuality';
-import SafeWeather3D from '../Widgets/SafeWeather3D';
 import PollenWidget from '../Widgets/PollenWidget';
 import AgricultureWidget from '../Widgets/AgricultureWidget';
 import PressureWidget from '../Widgets/PressureWidget';
@@ -325,22 +327,22 @@ const Dashboard = ({ isDark, toggleTheme }) => {
             <MoonPhaseWidget astronomy={data?.astronomy} />
 
             {/* Row 6: Temperature Chart (full width on mobile) */}
-            <TemperatureChart data={data?.hourly} />
+            <LazyTemperatureChartWidget data={data?.hourly} />
 
             {/* Row 7: Humidity and Wind Rose */}
-            <HumidityChart data={data?.hourly} />
+            <LazyHumidityChartWidget data={data?.hourly} />
             <WindRose data={data?.windRose} />
 
             {/* Row 8: 3D Visualization */}
-            <SafeWeather3D condition={data?.current?.condition} />
+            <LazySafeWeather3DWidget condition={data?.current?.condition} />
 
             {/* Row 9: UV and Air Quality */}
             <UVIndex value={data?.current?.uvIndex || 0} />
             <AirQuality data={data?.airQuality} />
 
             {/* Row 10: Precipitation and Wind Charts */}
-            <PrecipitationChart data={data?.hourly} />
-            <WindChart data={data?.hourly} />
+            <LazyPrecipitationChartWidget data={data?.hourly} />
+            <LazyWindChartWidget data={data?.hourly} />
 
             {/* Row 11: Pollen Widget */}
             <PollenWidget data={data?.pollen} />

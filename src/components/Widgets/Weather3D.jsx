@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
-import * as THREE from 'three';
+import { AdditiveBlending, BackSide, Color, FrontSide, LoadingManager, TextureLoader } from 'three';
 import Card from '../common/Card';
 import { Globe } from 'lucide-react';
 
@@ -23,8 +23,8 @@ const Earth = ({ size = 2.5 }) => {
 
   // Загрузка всех текстур
   useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    const loadingManager = new THREE.LoadingManager();
+    const loader = new TextureLoader();
+    const loadingManager = new LoadingManager();
 
     loadingManager.onLoad = () => {
       setTextures(loadedTextures);
@@ -106,7 +106,7 @@ const Earth = ({ size = 2.5 }) => {
           map={textures.earth}
           normalMap={textures.normal}
           specularMap={textures.specular}
-          specular={new THREE.Color(0x333333)}
+          specular={new Color(0x333333)}
           shininess={15}
         />
       </Sphere>
@@ -117,8 +117,8 @@ const Earth = ({ size = 2.5 }) => {
           map={textures.clouds}
           transparent
           opacity={0.4}
-          side={THREE.FrontSide}
-          blending={THREE.AdditiveBlending}
+          side={FrontSide}
+          blending={AdditiveBlending}
           depthWrite={false}
         />
       </Sphere>
@@ -129,7 +129,7 @@ const Earth = ({ size = 2.5 }) => {
           color="#4a90d9"
           transparent
           opacity={0.1}
-          side={THREE.BackSide}
+          side={BackSide}
         />
       </Sphere>
     </group>
@@ -225,7 +225,7 @@ const Precipitation = ({ type, earthSize = 2.5 }) => {
         color={color}
         transparent
         opacity={type === 'snow' ? 0.7 : 0.6}
-        blending={THREE.AdditiveBlending}
+        blending={AdditiveBlending}
         depthWrite={false}
       />
     </points>

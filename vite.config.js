@@ -17,20 +17,57 @@ export default defineConfig(({ mode }) => {
       // Code splitting оптимизация
       rollupOptions: {
         output: {
-          manualChunks: {
-            // React и зависимости
-            'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
-            // Графики
-            'charts-vendor': ['recharts'],
-            // Иконки
-            'icons-vendor': ['lucide-react'],
-            // Утилиты
-            'utils-vendor': ['suncalc']
+          manualChunks(id) {
+            const normalizedId = id.split('\\').join('/');
+
+            if (!normalizedId.includes('node_modules')) {
+              return;
+            }
+
+            if (
+              normalizedId.includes('/react/') ||
+              normalizedId.includes('/react-dom/') ||
+              normalizedId.includes('/scheduler/')
+            ) {
+              return 'react-vendor';
+            }
+
+            if (normalizedId.includes('/recharts/')) {
+              return 'charts-vendor';
+            }
+
+            if (normalizedId.includes('/three/examples/')) {
+              return 'three-examples-vendor';
+            }
+
+            if (normalizedId.includes('/three/')) {
+              return 'three-core-vendor';
+            }
+
+            if (normalizedId.includes('/@react-three/fiber/')) {
+              return 'r3f-vendor';
+            }
+
+            if (normalizedId.includes('/@react-three/drei/')) {
+              return 'drei-vendor';
+            }
+
+            if (normalizedId.includes('/framer-motion/')) {
+              return 'motion-vendor';
+            }
+
+            if (normalizedId.includes('/lucide-react/')) {
+              return 'icons-vendor';
+            }
+
+            if (normalizedId.includes('/suncalc/')) {
+              return 'utils-vendor';
+            }
           }
         }
       },
       // Разделение чанков
-      chunkSizeWarningLimit: 600,
+      chunkSizeWarningLimit: 750,
       // Минификация
       minify: 'esbuild',
       // Sourcemap для отладки
