@@ -3,7 +3,9 @@ import { Settings, Key, MapPin, X, Check, AlertCircle } from 'lucide-react';
 
 const SettingsModal = ({ isOpen, onClose, onSave }) => {
   const [apiKey, setApiKey] = useState('');
+  const [stormglassKey, setStormglassKey] = useState('');
   const [useGeolocation, setUseGeolocation] = useState(true);
+  const [strictTruthMode, setStrictTruthMode] = useState(true);
   const [status, setStatus] = useState({ type: '', message: '' });
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
@@ -12,8 +14,12 @@ const SettingsModal = ({ isOpen, onClose, onSave }) => {
     if (isOpen) {
       const savedKey = localStorage.getItem('owm_api_key') || '';
       const savedGeo = localStorage.getItem('use_geolocation') !== 'false';
+      const savedStormglassKey = localStorage.getItem('stormglass_api_key') || '';
+      const savedStrictTruth = localStorage.getItem('strict_truth_mode') !== 'false';
       setApiKey(savedKey);
+      setStormglassKey(savedStormglassKey);
       setUseGeolocation(savedGeo);
+      setStrictTruthMode(savedStrictTruth);
     }
   }, [isOpen]);
 
@@ -36,8 +42,10 @@ const SettingsModal = ({ isOpen, onClose, onSave }) => {
       }
     }
 
-    localStorage.setItem('owm_api_key', apiKey);
+    localStorage.setItem('owm_api_key', apiKey.trim());
+    localStorage.setItem('stormglass_api_key', stormglassKey.trim());
     localStorage.setItem('use_geolocation', useGeolocation.toString());
+    localStorage.setItem('strict_truth_mode', strictTruthMode.toString());
 
     setStatus({ type: 'success', message: 'Сохранено!' });
     
@@ -147,6 +155,25 @@ const SettingsModal = ({ isOpen, onClose, onSave }) => {
             </p>
           </div>
 
+          {/* Stormglass API Key */}
+          <div>
+            <label htmlFor="stormglass-api-key" className="flex items-center gap-2 text-sm text-slate-300 mb-2">
+              <Key className="w-4 h-4" />
+              API ключ Stormglass (приливы)
+            </label>
+            <input
+              id="stormglass-api-key"
+              type="text"
+              value={stormglassKey}
+              onChange={(e) => setStormglassKey(e.target.value)}
+              placeholder="Опционально: для реальных приливов"
+              className="w-full px-3 py-2.5 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm"
+            />
+            <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+              Без этого ключа виджет приливов будет в режиме "Недоступно".
+            </p>
+          </div>
+
           {/* Geolocation Toggle */}
           <div className="bg-slate-700/30 rounded-lg p-3">
             <div className="flex items-center justify-between">
@@ -174,6 +201,32 @@ const SettingsModal = ({ isOpen, onClose, onSave }) => {
             <p className="text-xs text-slate-500 mt-2">
               Автоматически определять местоположение
             </p>
+          </div>
+
+          {/* Strict Truth Mode */}
+          <div className="bg-slate-700/30 rounded-lg p-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-sm text-slate-300">Strict Truth Mode</span>
+                <p className="text-xs text-slate-500 mt-1">Запрещает synthetic/mock значения в production-режиме.</p>
+              </div>
+              <button
+                type="button"
+                className={`relative w-12 h-6 rounded-full transition-colors ${
+                  strictTruthMode ? 'bg-emerald-500' : 'bg-slate-600'
+                }`}
+                onClick={() => setStrictTruthMode(!strictTruthMode)}
+                role="switch"
+                aria-checked={strictTruthMode}
+                aria-label="Переключить Strict Truth Mode"
+              >
+                <div
+                  className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                    strictTruthMode ? 'left-7' : 'left-1'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {/* Status Message */}

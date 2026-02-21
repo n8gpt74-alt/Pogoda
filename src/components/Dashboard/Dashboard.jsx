@@ -34,6 +34,7 @@ import ComfortIndexWidget from '../Widgets/ComfortIndexWidget';
 import SunProgressWidget from '../Widgets/SunProgressWidget';
 import MoonPhaseWidget from '../Widgets/MoonPhaseWidget';
 import ExportWidget from '../Widgets/ExportWidget';
+import DataPassportWidget from '../Widgets/DataPassportWidget';
 import WeatherStatsWidget from '../Widgets/WeatherStatsWidget';
 import WeatherMapWidget from '../Widgets/WeatherMapWidget';
 import ActivitiesWidget from '../Widgets/ActivitiesWidget';
@@ -306,6 +307,8 @@ const Dashboard = ({ isDark, toggleTheme }) => {
             initial="hidden"
             animate="visible"
           >
+            <DataPassportWidget passport={data?.dataPassport} />
+
             {/* Weather Alerts - показываем только если есть предупреждения */}
             <WeatherAlerts alerts={data?.alerts || []} current={data?.current} />
 
@@ -362,7 +365,7 @@ const Dashboard = ({ isDark, toggleTheme }) => {
             {/* NEW: Calendar & Special Widgets */}
             <LunarCalendarWidget astronomy={data?.astronomy} />
             <GardeningCalendarWidget agriculture={data?.agriculture} current={data?.current} />
-            <TidesWidget location={location} />
+            <TidesWidget data={data?.tides} location={location} />
 
             {/* Row 14: Weather Map */}
             <WeatherMapWidget
