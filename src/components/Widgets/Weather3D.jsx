@@ -84,7 +84,7 @@ const Earth = ({ size = 2.5 }) => {
   if (error) {
     return (
       <Sphere args={[size, 32, 32]}>
-        <meshStandardMaterial color="#1e5799" roughness={0.7} />
+        <meshStandardMaterial color="#1e5799" roughness={0.65} emissive="#0f2a42" emissiveIntensity={0.18} />
       </Sphere>
     );
   }
@@ -93,7 +93,7 @@ const Earth = ({ size = 2.5 }) => {
   if (!textures) {
     return (
       <Sphere args={[size, 32, 32]}>
-        <meshStandardMaterial color="#1e5799" roughness={0.7} />
+        <meshStandardMaterial color="#1e5799" roughness={0.65} emissive="#0f2a42" emissiveIntensity={0.18} />
       </Sphere>
     );
   }
@@ -106,8 +106,10 @@ const Earth = ({ size = 2.5 }) => {
           map={textures.earth}
           normalMap={textures.normal}
           specularMap={textures.specular}
-          specular={new Color(0x333333)}
-          shininess={15}
+          specular={new Color(0x4a4a4a)}
+          shininess={20}
+          emissive={new Color(0x10243a)}
+          emissiveIntensity={0.16}
         />
       </Sphere>
 
@@ -329,9 +331,9 @@ const Weather3D = ({ condition }) => {
           </div>
         }>
           <Canvas camera={{ position: [0, 0, 7], fov: 45 }}>
-            <ambientLight intensity={showThunderstorm ? 0.2 : 0.5} />
-            <directionalLight position={[5, 5, 5]} intensity={showThunderstorm ? 0.6 : 1.2} />
-            <pointLight position={[-5, -5, -5]} intensity={0.3} color="#60a5fa" />
+            <ambientLight intensity={showThunderstorm ? 0.28 : 0.62} />
+            <directionalLight position={[5, 5, 5]} intensity={showThunderstorm ? 0.75 : 1.35} />
+            <pointLight position={[-5, -5, -5]} intensity={0.38} color="#60a5fa" />
 
             <Earth size={earthSize} />
 
